@@ -1,8 +1,13 @@
 -module(tls_server).
 
--export([start/0, sni_fun/1]).
+-export([start/0, start/1, sni_fun/1]).
 
 start() ->
+    start(9999).
+
+start([Port]) when is_atom(Port) ->
+    start(binary_to_integer(atom_to_binary(Port)));
+start(Port) when is_integer(Port) ->
     inets:start(),
     ssl:start(),
     SslOpts = [
@@ -15,7 +20,7 @@ start() ->
         {fail_if_no_peer_cert, true}
     ],
     ok = io:format("[INFO] before ssl:listen(9999, Opts)~n", []),
-    {ok, ListenSocket} = ssl:listen(9999, SslOpts),
+    {ok, ListenSocket} = ssl:listen(Port, SslOpts),
     ok = io:format("[INFO] after ssl:listen(9999, Opts)~n", []),
     accept_and_handshake(ListenSocket).
 

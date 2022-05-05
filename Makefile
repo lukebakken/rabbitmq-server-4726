@@ -1,4 +1,6 @@
-﻿.PHONY: clean run_tls_server run_tls_client
+﻿.PHONY: clean run_openssl_server
+
+PORT ?= 9999
 
 all: tls_server tls_client
 
@@ -16,7 +18,13 @@ tls_client.beam: tls_client.erl
 tls_client: tls_client.beam
 
 run_tls_client: tls_client
-	erl -noinput -s tls_client start
+	erl -noinput -s tls_client start $(PORT)
 
 run_tls_server: tls_server
-	erl -noinput -s tls_server start
+	erl -noinput -s tls_server start $(PORT)
+
+run_openssl_server:
+	openssl s_server -accept $(PORT) \
+		-CAfile $(CURDIR)/certs/ca_certificate.pem \
+		-cert $(CURDIR)/certs/server_localhost_certificate.pem \
+		-key $(CURDIR)/certs/server_localhost_key.pem

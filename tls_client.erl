@@ -1,8 +1,13 @@
 -module(tls_client).
 
--export([start/0]).
+-export([start/0, start/1]).
 
 start() ->
+    start(9999).
+
+start([Port]) when is_atom(Port) ->
+    start(binary_to_integer(atom_to_binary(Port)));
+start(Port) when is_integer(Port) ->
     inets:start(),
     ssl:start(),
     SslOpts = [
