@@ -3,11 +3,12 @@
 -export([start/0, start/1]).
 
 start() ->
-    start(9999).
+    start("localhost", 9999).
 
-start([Port]) when is_atom(Port) ->
-    start(binary_to_integer(atom_to_binary(Port)));
-start(Port) when is_integer(Port) ->
+start([Host, Port]) when is_atom(Host) andalso is_atom(Port) ->
+    start(atom_to_list(Host), binary_to_integer(atom_to_binary(Port))).
+
+start(Host, Port) when is_integer(Port) ->
     inets:start(),
     ssl:start(),
     SslOpts = [
@@ -19,7 +20,7 @@ start(Port) when is_integer(Port) ->
         {fail_if_no_peer_cert, true}
     ],
     ok = io:format("[INFO] before ssl:connect~n", []),
-    {ok, TlsSocket} = ssl:connect("localhost", Port, SslOpts),
+    {ok, TlsSocket} = ssl:connect(Host, Port, SslOpts),
     ok = io:format("[INFO] after ssl:connect~n", []),
     loop(TlsSocket, 0).
 
