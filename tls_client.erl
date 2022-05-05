@@ -19,12 +19,12 @@ start(Port) when is_integer(Port) ->
         {fail_if_no_peer_cert, true}
     ],
     ok = io:format("[INFO] before ssl:connect~n", []),
-    {ok, TlsSocket} = ssl:connect("localhost", 9999, SslOpts),
+    {ok, TlsSocket} = ssl:connect("localhost", Port, SslOpts),
     ok = io:format("[INFO] after ssl:connect~n", []),
     loop(TlsSocket, 0).
 
 loop(TlsSocket, Idx) ->
-    Msg = io_lib:format("HELLO ~p", [Idx]),
+    Msg = io_lib:format("HELLO ~p~n", [Idx]),
     ok = io:format("[INFO] sending Msg: ~p~n", [Msg]),
     ok = ssl:send(TlsSocket, Msg),
     receive

@@ -1,6 +1,7 @@
-﻿.PHONY: clean run_openssl_server
+﻿.PHONY: clean run_openssl_client run_openssl_server
 
 PORT ?= 9999
+SERVER ?= localhost
 
 all: tls_server tls_client
 
@@ -22,6 +23,13 @@ run_tls_client: tls_client
 
 run_tls_server: tls_server
 	erl -noinput -s tls_server start $(PORT)
+
+run_openssl_client:
+	openssl s_client -connect $(SERVER):$(PORT) \
+		-CAfile $(CURDIR)/certs/ca_certificate.pem \
+		-cert $(CURDIR)/certs/client_certificate.pem \
+		-key $(CURDIR)/certs/client_key.pem \
+		-verify 8 -verify_hostname $(SERVER)
 
 run_openssl_server:
 	openssl s_server -accept $(PORT) \
