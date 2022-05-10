@@ -20,7 +20,7 @@ start(Host, Port) when is_integer(Port) ->
         {fail_if_no_peer_cert, true}
     ],
     Opts = [
-        {log, fun log/3},
+        {log, fun ?MODULE:log/3},
         {port, Port},
         {ssl, true},
         {sslopts, SslOpts}
