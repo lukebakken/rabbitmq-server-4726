@@ -1,6 +1,6 @@
 -module(eldap_client).
 
--export([start/0, start/1]).
+-export([start/0, start/1, log/3]).
 
 start() ->
     start("localhost", 9999).
