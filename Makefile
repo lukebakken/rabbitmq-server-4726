@@ -2,6 +2,8 @@
 
 PORT ?= 9999
 HOST ?= localhost
+DN ?= CN=undefined
+PASSWD ?= test1234
 
 all: eldap_client tls_server tls_client
 
@@ -24,7 +26,7 @@ tls_client.beam: tls_client.erl
 tls_client: tls_client.beam
 
 run_eldap_client: eldap_client
-	erl -noinput -s eldap_client start $(HOST) $(PORT)
+	erl -noinput -s eldap_client start $(HOST) $(PORT) $(DN) $(PASSWD)
 
 run_tls_client: tls_client
 	erl -noinput -s tls_client start $(HOST) $(PORT)
