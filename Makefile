@@ -37,12 +37,12 @@ run_tls_server: tls_server
 run_openssl_client:
 	openssl s_client -connect $(HOST):$(PORT) \
 		-CAfile $(CURDIR)/certs/ca_certificate.pem \
-		-cert $(CURDIR)/certs/client_certificate.pem \
-		-key $(CURDIR)/certs/client_key.pem \
+		-cert $(CURDIR)/certs/client_bakkenl-z01_certificate.pem \
+		-key $(CURDIR)/certs/client_bakkenl-z01_key.pem \
 		-verify 8 -verify_hostname $(HOST)
 
 run_openssl_server:
 	openssl s_server -accept $(PORT) \
 		-CAfile $(CURDIR)/certs/ca_certificate.pem \
-		-cert $(CURDIR)/certs/server_localhost_certificate.pem \
-		-key $(CURDIR)/certs/server_localhost_key.pem
+		-cert $(CURDIR)/certs/server_bakkenl-z01_certificate.pem \
+		-key $(CURDIR)/certs/server_bakkenl-z01_key.pem

@@ -14,15 +14,19 @@ start([Host, Port, Dn, Passwd]) when is_atom(Host) andalso is_atom(Port)
     start(HostStr, PortStr, DnStr, PasswdStr).
 
 start(Host, Port, Dn, Passwd) when is_integer(Port) ->
+    ok = io:format("[INFO] Host: ~s~n", [Host]),
+    ok = io:format("[INFO] Port: ~p~n", [Port]),
+    ok = io:format("[INFO] Dn: ~s~n", [Dn]),
+    ok = io:format("[INFO] Passwd: ~s~n", [Passwd]),
     inets:start(),
     ssl:start(),
     SslOpts = [
         {cacertfile, "./certs/ca_certificate.pem"},
-        {certfile, "./certs/client_localhost_certificate.pem"},
-        {keyfile, "./certs/client_localhost_key.pem"},
+        {certfile, "./certs/client_bakkenl-z01_certificate.pem"},
+        {keyfile, "./certs/client_bakkenl-z01_key.pem"},
         {reuseaddr, false},
-        {verify, verify_peer},
-        {fail_if_no_peer_cert, true}
+        {verify, verify_none},
+        {fail_if_no_peer_cert, false}
     ],
     Opts = [
         {log, fun ?MODULE:log/3},
