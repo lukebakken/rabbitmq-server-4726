@@ -44,7 +44,10 @@ start(Host, Port, Dn, Passwd) when is_integer(Port) ->
         Error ->
             ok = io:format("[ERROR] simple bind failed, Error: ~p~n", [Error])
     end,
-    ok = eldap:close(Handle).
+    ok = io:format("[INFO] closing LDAP connection...~n", []),
+    ok = eldap:close(Handle),
+    ok = io:format("[INFO] LDAP connection is closed.~n", []),
+    init:stop().
 
 log(Level, FormatString, FormatArgs) ->
     LdapMsg = io_lib:format(FormatString, FormatArgs),
